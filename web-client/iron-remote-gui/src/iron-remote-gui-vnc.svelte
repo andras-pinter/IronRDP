@@ -1,4 +1,4 @@
-<svelte:options tag="iron-remote-gui" />
+<svelte:options tag="iron-remote-gui-vnc" />
 
 <script lang="ts">
     import { onMount } from 'svelte';

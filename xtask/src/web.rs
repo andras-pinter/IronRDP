@@ -44,11 +44,11 @@ pub fn run(sh: &Shell) -> anyhow::Result<()> {
 }
 
 fn build(sh: &Shell, wasm_pack_dev: bool) -> anyhow::Result<()> {
-    if wasm_pack_dev {
-        run_cmd_in!(sh, IRONRDP_WEB_PATH, "wasm-pack build --dev --target web")?;
-    } else {
-        run_cmd_in!(sh, IRONRDP_WEB_PATH, "wasm-pack build --target web")?;
-    }
+    // if wasm_pack_dev {
+    //     run_cmd_in!(sh, IRONRDP_WEB_PATH, "wasm-pack build --dev --target web")?;
+    // } else {
+    //     run_cmd_in!(sh, IRONRDP_WEB_PATH, "wasm-pack build --target web")?;
+    // }
 
     run_cmd_in!(sh, IRON_REMOTE_GUI_PATH, "{NPM} run build-alone")?;
     run_cmd_in!(sh, IRON_SVELTE_CLIENT_PATH, "{NPM} run build-no-wasm")?;

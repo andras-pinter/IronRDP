@@ -1,19 +1,17 @@
 {
-  "name": "@devolutions/iron-remote-gui",
-  "author": "Nicolas Girot",
+  "name": "@devolutions/iron-remote-gui-vnc",
+  "author": "Benoit Cortier",
   "email": "ngirot@devolutions.net",
   "contributors": [
-    "Benoit Cortier",
-    "Irving Ou",
-    "Vladislav Nikonov",
-    "Zacharia Ellaham"
+    "Alex Yusiuk",
+    "Vladislav Nikonov"
   ],
-  "description": "Web Component providing agnostic implementation for Iron Wasm base client.",
-  "version": "0.11.3",
-  "main": "iron-remote-gui.umd.cjs",
+  "description": "VNC version of Iron Remote GUI.",
+  "version": "0.1.1",
+  "main": "iron-remote-gui-vnc.umd.cjs",
   "types": "index.d.ts",
   "files": [
-    "iron-remote-gui.umd.cjs",
+    "iron-remote-gui-vnc.umd.cjs",
     "index.d.ts"
   ],
   "dependencies": {
