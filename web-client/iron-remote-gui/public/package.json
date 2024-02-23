@@ -7,7 +7,7 @@
     "Vladislav Nikonov"
   ],
   "description": "VNC version of Iron Remote GUI.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "iron-remote-gui-vnc.umd.cjs",
   "types": "index.d.ts",
   "files": [
