@@ -725,7 +725,7 @@ fn create_client_info_pdu(config: &Config, routing_addr: &SocketAddr) -> rdp::Cl
         code_page: 0, // ignored if the keyboardLayout field of the Client Core Data is set to zero
         flags,
         compression_type: CompressionType::K8, // ignored if ClientInfoFlags::COMPRESSION is not set
-        alternate_shell: String::new(),
+        alternate_shell: config.alternate_shell.clone().unwrap_or_default(),
         work_dir: String::new(),
         extra_info: ExtendedClientInfo {
             address_family: match routing_addr {

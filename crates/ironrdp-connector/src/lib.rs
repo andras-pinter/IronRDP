@@ -136,6 +136,8 @@ pub struct Config {
     pub platform: capability_sets::MajorPlatformType,
     /// If true, the INFO_AUTOLOGON flag is set in the [`ClientInfoPdu`](ironrdp_pdu::rdp::ClientInfoPdu)
     pub autologon: bool,
+    /// RDP RemoteApp support
+    pub alternate_shell: Option<String>,
 
     // FIXME(@CBenoit): these are client-only options, not part of the connector.
     pub no_server_pointer: bool,
