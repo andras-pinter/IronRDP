@@ -6,7 +6,7 @@ use ironrdp_graphics::pointer::{DecodedPointer, PointerBitmapTarget};
 use ironrdp_graphics::rdp6::BitmapStreamDecoder;
 use ironrdp_graphics::rle::RlePixelFormat;
 use ironrdp_pdu::codecs::rfx::FrameAcknowledgePdu;
-use ironrdp_pdu::fast_path::{FastPathHeader, FastPathUpdate, FastPathUpdatePdu, Fragmentation};
+use ironrdp_pdu::fast_path::{FastPathHeader, FastPathUpdate, FastPathUpdatePdu, Fragmentation, UpdateCode};
 use ironrdp_pdu::geometry::{InclusiveRectangle, Rectangle as _};
 use ironrdp_pdu::pointer::PointerUpdateData;
 use ironrdp_pdu::rdp::headers::ShareDataPdu;
@@ -64,16 +64,7 @@ impl Processor {
         let header = decode_cursor::<FastPathHeader>(&mut input).map_err(SessionError::decode)?;
         debug!(fast_path_header = ?header, "Received Fast-Path packet");
 
-        let update_pdu = decode_cursor::<FastPathUpdatePdu<'_>>(&mut input).map_err(SessionError::decode)?;
-        trace!(fast_path_update_fragmentation = ?update_pdu.fragmentation);
-
-        let processed_complete_data = self
-            .complete_data
-            .process_data(update_pdu.data, update_pdu.fragmentation);
-
-        let update_code = update_pdu.update_code;
-
-        let Some(data) = processed_complete_data else {
+        let Some((update_code, data)) = self.read_input(&mut input)? else {
             return Ok(Vec::new());
         };
 
@@ -369,6 +360,24 @@ impl Processor {
         }
 
         Ok(update_rectangle)
+    }
+
+    fn read_input(&mut self, input: &mut ReadCursor<'_>) -> Result<Option<(UpdateCode, Vec<u8>)>, SessionError> {
+        while !input.is_empty() {
+            let update_pdu = decode_cursor::<FastPathUpdatePdu<'_>>(input).map_err(SessionError::decode)?;
+            trace!(fast_path_update_fragmentation = ?update_pdu.fragmentation);
+            trace!(input_remaining = ?input.len(), "Fast-Path update remaining input");
+
+            let processed_complete_data = self
+                .complete_data
+                .process_data(update_pdu.data, update_pdu.fragmentation);
+
+            if let Some(processed_complete_data) = processed_complete_data {
+                return Ok(Some((update_pdu.update_code, processed_complete_data)));
+            }
+        }
+
+        Ok(None)
     }
 }
 
