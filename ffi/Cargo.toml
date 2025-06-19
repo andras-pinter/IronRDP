@@ -17,7 +17,7 @@ diplomat-runtime = "0.7"
 ironrdp = { path = "../crates/ironrdp", features = ["session", "connector", "dvc", "svc", "rdpdr", "rdpsnd", "graphics", "input", "cliprdr", "displaycontrol"] }
 ironrdp-cliprdr-native.path = "../crates/ironrdp-cliprdr-native"
 ironrdp-core = { path = "../crates/ironrdp-core", features = ["alloc"] }
-sspi = { git = "https://github.com/andras-pinter/sspi-rs.git", tag = "0.15.3-onepam", features = ["network_client"] }
+sspi = { git = "https://github.com/andras-pinter/sspi-rs.git", tag = "0.15.11-onepam", features = ["network_client"] }
 thiserror = "1"
 tracing = { version = "0.1", features = ["log"] }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
@@ -27,4 +27,3 @@ embed-resource = "3.0"
 
 [lints]
 workspace = true
-
