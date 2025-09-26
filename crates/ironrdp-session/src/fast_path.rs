@@ -363,21 +363,19 @@ impl Processor {
     }
 
     fn read_input(&mut self, input: &mut ReadCursor<'_>) -> Result<Option<(UpdateCode, Vec<u8>)>, SessionError> {
-        while !input.is_empty() {
-            let update_pdu = decode_cursor::<FastPathUpdatePdu<'_>>(input).map_err(SessionError::decode)?;
-            trace!(fast_path_update_fragmentation = ?update_pdu.fragmentation);
-            trace!(input_remaining = ?input.len(), "Fast-Path update remaining input");
+        let update_pdu = decode_cursor::<FastPathUpdatePdu<'_>>(input).map_err(SessionError::decode)?;
+        trace!(fast_path_update_fragmentation = ?update_pdu.fragmentation);
+        trace!(input_remaining = ?input.len(), "Fast-Path update remaining input");
 
-            let processed_complete_data = self
-                .complete_data
-                .process_data(update_pdu.data, update_pdu.fragmentation);
+        let processed_complete_data = self
+            .complete_data
+            .process_data(update_pdu.data, update_pdu.fragmentation);
 
-            if let Some(processed_complete_data) = processed_complete_data {
-                return Ok(Some((update_pdu.update_code, processed_complete_data)));
-            }
+        if let Some(processed_complete_data) = processed_complete_data {
+            Ok(Some((update_pdu.update_code, processed_complete_data)))
+        } else {
+            Ok(None)
         }
-
-        Ok(None)
     }
 }
 
